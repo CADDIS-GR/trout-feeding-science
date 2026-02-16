@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Trout Feed — 송어 섭식의 과학</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;400;700&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #0e1214;
+    --paper:  #f5f0e8;
+    --river:  #1a3a4a;
+    --teal:   #2a8a7f;
+    --amber:  #c8873a;
+    --fog:    #8fa5aa;
+    --white:  #fdfaf5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--river);
+    color: var(--paper);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── 배경 텍스처 ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(42,138,127,.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 20%, rgba(200,135,58,.08) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── HEADER ── */
+  header {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid rgba(143,165,170,.25);
+  }
+  .series-label {
+    font-family: 'Fira Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .series-label::before {
+    content: '';
+    display: block; width: 32px; height: 1px;
+    background: var(--teal);
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--amber);
+  }
+  .subtitle {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--fog);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 36px;
+  }
+  .motto {
+    display: inline-block;
+    border: 1px solid rgba(200,135,58,.4);
+    border-left: 3px solid var(--amber);
+    background: rgba(200,135,58,.08);
+    padding: 14px 20px;
+    font-size: .9rem;
+    color: #e8c88a;
+    font-style: italic;
+    letter-spacing: .02em;
+  }
+
+  /* ── EPISODE GRID ── */
+  .ep-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+    margin: 56px 0;
+  }
+
+  .ep-card {
+    position: relative;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(143,165,170,.12);
+    padding: 32px 28px 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: background .25s, border-color .25s, transform .25s;
+    display: flex; flex-direction: column;
+    min-height: 220px;
+    overflow: hidden;
+  }
+  .ep-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--amber));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s;
+  }
+  .ep-card:hover { background: rgba(255,255,255,.07); border-color: rgba(143,165,170,.3); transform: translateY(-2px); }
+  .ep-card:hover::before { transform: scaleX(1); }
+
+  .ep-card.coming-soon {
+    opacity: .45;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .ep-num {
+    font-family: 'Fira Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: var(--teal);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .ep-title-en {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .ep-title-ko {
+    font-size: .8rem;
+    color: var(--fog);
+    margin-bottom: 16px;
+    letter-spacing: .03em;
+  }
+  .ep-desc {
+    font-size: .85rem;
+    color: rgba(143,165,170,.8);
+    line-height: 1.7;
+    flex: 1;
+  }
+  .ep-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    border-radius: 2px;
+  }
+  .ep-card.coming-soon .ep-tag {
+    border-color: var(--fog);
+    color: var(--fog);
+  }
+
+  /* ── KEY NUMBERS ── */
+  .key-numbers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(143,165,170,.12);
+    border: 1px solid rgba(143,165,170,.12);
+    margin-bottom: 64px;
+  }
+  .kn-item {
+    background: rgba(14,18,20,.5);
+    padding: 28px 20px;
+    text-align: center;
+  }
+  .kn-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--amber);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .kn-lbl {
+    font-size: .72rem;
+    color: var(--fog);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 600px) {
+    .key-numbers { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(143,165,170,.15);
+    padding: 32px 0 48px;
+    font-family: 'Fira Mono', monospace;
+    font-size: .75rem;
+    color: rgba(143,165,170,.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  /* ── ANIMATE ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .ep-card { animation: fadeUp .5s both; }
+  .ep-card:nth-child(1) { animation-delay: .05s; }
+  .ep-card:nth-child(2) { animation-delay: .12s; }
+  .ep-card:nth-child(3) { animation-delay: .19s; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="series-label">Series Archive · CADDIS-GR</div>
+    <h1>How Trout <em>Feed</em></h1>
+    <p class="subtitle">송어가 무엇을, 어떻게, 왜 먹는지 과학적으로 분석하는 시리즈. 숫자를 이해하면 낚시가 달라집니다.</p>
+    <div class="motto">"먹이가 작을수록 송어는 더 자주 먹습니다." — Fish the Math</div>
+  </header>
+
+  <div class="key-numbers" style="margin-top:48px;">
+    <div class="kn-item">
+      <span class="kn-val">4–6mm</span>
+      <span class="kn-lbl">최적 먹이 크기</span>
+    </div>
+    <div class="kn-item">
+      <span class="kn-val">50%+</span>
+      <span class="kn-lbl">강 내 깔따구 비중</span>
+    </div>
+    <div class="kn-item">
+      <span class="kn-val">&lt; 2sec</span>
+      <span class="kn-lbl">송어의 판단 시간</span>
+    </div>
+    <div class="kn-item">
+      <span class="kn-val">14d–3m</span>
+      <span class="kn-lbl">탐색 이미지 지속</span>
+    </div>
+  </div>
+
+  <div class="ep-grid">
+
+    <a href="ep01/index.html" class="ep-card">
+      <div class="ep-num">Episode 01</div>
+      <div class="ep-title-en">Fish the Math</div>
+      <div class="ep-title-ko">숫자 게임 — 플라이 크기의 과학</div>
+      <p class="ep-desc">송어가 가장 자주 섭취하는 먹이 크기는 4~6mm. 큰 플라이가 아닌 작은 플라이로 확률을 높이는 수학적 근거.</p>
+      <span class="ep-tag">Published</span>
+    </a>
+
+    <a href="ep02/index.html" class="ep-card">
+      <div class="ep-num">Episode 02</div>
+      <div class="ep-title-en">The Search Image</div>
+      <div class="ep-title-ko">탐색 이미지 — 송어의 인지 필터</div>
+      <p class="ep-desc">송어는 어떻게 먹이를 식별하는가. 탐색 이미지의 형성 원리와 깔따구가 송어의 가장 친한 친구인 이유.</p>
+      <span class="ep-tag">Published</span>
+    </a>
+
+    <div class="ep-card coming-soon">
+      <div class="ep-num">Episode 03</div>
+      <div class="ep-title-en">Coming Soon</div>
+      <div class="ep-title-ko">다음 에피소드</div>
+      <p class="ep-desc">시리즈가 업데이트되면 이 카드가 활성화됩니다.</p>
+      <span class="ep-tag">Upcoming</span>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>CADDIS-GR / trout-feeding-science</span>
+    <span>How Trout Feed Series · GitHub Pages</span>
+  </footer>
+
+</div>
+</body>
+</html>
