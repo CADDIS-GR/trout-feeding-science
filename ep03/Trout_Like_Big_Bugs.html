@@ -117,6 +117,48 @@
     color: rgba(255,255,255,0.5);
     font-weight: 300;
     letter-spacing: 0.5px;
+    margin-bottom: 24px;
+  }
+
+  .header-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .header-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-youtube {
+    background: rgba(255,0,0,0.15);
+    border: 1px solid rgba(255,80,80,0.35);
+    color: #ff8a8a;
+  }
+  .btn-youtube:hover {
+    background: rgba(255,0,0,0.28);
+    border-color: rgba(255,80,80,0.6);
+    color: #ffaaaa;
+  }
+
+  .btn-pdf {
+    background: rgba(77,166,200,0.12);
+    border: 1px solid rgba(77,166,200,0.3);
+    color: var(--accent2);
+  }
+  .btn-pdf:hover {
+    background: rgba(77,166,200,0.22);
+    border-color: rgba(77,166,200,0.55);
+    color: #7dc8e0;
   }
 
   /* Body */
@@ -343,6 +385,14 @@
     <div class="series-tag">Fly Fishing Science · Episode 3</div>
     <h1>Trout Like Big Bugs</h1>
     <p class="subtitle">송어의 먹이 선택 메커니즘과 플라이 사이즈 전략</p>
+    <div class="header-links">
+      <a href="https://youtu.be/ZO4sLzJvNXg?si=NZuib__w3tH5W87d" target="_blank" class="btn-youtube">
+        ▶ YouTube 원본 영상
+      </a>
+      <a href="https://github.com/CADDIS-GR/trout-feeding-science/blob/main/ep03/Trout_Like_Big_Bugs.pdf" target="_blank" class="btn-pdf">
+        📄 한국어 원문 스크립트 PDF
+      </a>
+    </div>
   </div>
 
   <div class="body">
